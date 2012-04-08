@@ -16,7 +16,17 @@
 var path        = require('path')
   , program     = require('commander')
   , exec        = require('child_process').exec
-  , githubGrowl = require('../');
+  , githubGrowl = require('../')
+  , settings
+
+try {
+  settings = require('../.settings')
+} catch (e) {
+  settings = {
+      token: null
+    , repos: []
+  }
+}
 
 program
   .version(githubGrowl.version)
@@ -43,20 +53,26 @@ var getUsername = function getUsername(callback) {
   });
 };
 
-var getPassword = function getPasswotad(callback) {
-  program.password('Github Password: ', function(password) {
-    process.stdin.destroy();
-    return callback(password);
-  });
+var getPassword = function getPassword(callback) {
+  if (settings.token) {
+    callback(settings.token, true)
+  } else {
+    program.password('Github Password: ', function(password) {
+      process.stdin.destroy();
+      return callback(password, false);
+    });
+  }
 };
 
 (function init() {
   getUsername(function(username) {
-    getPassword(function(password) {
+    getPassword(function(password, isAuth) {
       githubGrowl.monitor({
           username : username
         , password : password
+        , isAuth   : isAuth
         , interval : interval
+        , settings : settings
       });
     });
   });
