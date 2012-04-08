@@ -25,9 +25,20 @@ program
 
 var interval = program.interval || 10000;
 
+var error = function(lines) {
+  lines = lines.join('\n')
+  console.log(lines)
+}
+
 var getUsername = function getUsername(callback) {
-  exec('git config --get github.user', function(err, stdout, stderr) {
-    if (err) throw err.stack;
+  exec('git config --global --get github.user', function(err, stdout, stderr) {
+    if (err) {
+      return error([
+          'There was a problem gathering your Github username from your git config.'
+        , 'Please set your username using:'
+        , '    git config --global github.user <username>'
+      ])
+    }
     return callback(stdout.trim());
   });
 };

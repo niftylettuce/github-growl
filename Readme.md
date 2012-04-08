@@ -1,5 +1,4 @@
-
-# github-growl
+# github-growl 
 
 Cross-platform desktop notifications for your Github repositories.
 
