@@ -1,3 +1,4 @@
+[![build status](https://secure.travis-ci.org/niftylettuce/github-growl.png)](http://travis-ci.org/niftylettuce/github-growl)
 # github-growl 
 
 Cross-platform desktop notifications for your Github repositories.
